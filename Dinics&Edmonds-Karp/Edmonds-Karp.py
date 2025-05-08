@@ -3,23 +3,20 @@ import networkx as nx
 import time
 import tracemalloc
 
-# Load the CSV
 df = pd.read_csv("MaxFlow_Graph.csv")
 
-# Build the graph
 G = nx.DiGraph()
 for _, row in df.iterrows():
-    G.add_edge(row['source'], row['target'], capacity=row['capacity'])
+    G.add_edge(row['Origin'], row['Destiny'], capacity=row['Capacity']) 
 
-source = 'S'  # Replace with actual start node
-sink = 'Z'    # Replace with actual end node
+source = 'S' 
+sink = 'Z'   
 
-# Dinic's Algorithm
-print("\n=== Dinic's Algorithm (Shortest Augmenting Path) ===")
+print("\n=== Edmonds-Karp Algorithm ===")
 tracemalloc.start()
 start_time = time.time()
 
-flow_value, flow_dict = nx.maximum_flow(G, source, sink, flow_func=nx.algorithms.flow.shortest_augmenting_path)
+flow_value, flow_dict = nx.maximum_flow(G, source, sink, flow_func=nx.algorithms.flow.edmonds_karp)
 
 end_time = time.time()
 current, peak = tracemalloc.get_traced_memory()
