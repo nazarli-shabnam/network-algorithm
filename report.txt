@@ -1,0 +1,81 @@
+                    ~PART 1
+- pandas.read_csv() to read 3 large CSV files
+-These contain network traffic data captured during normal and attack conditions.
+- manually applied 43 columns as defined in the Total Feature Description sheet.
+- added a column "source" to identify which file each row came from.
+- merged the datasets using pd.concat().
+
+                    ~PART 2
+- I created a Python dictionary that maps each column name to a simple, understandable description.
+- These attributes describe each network event, including who communicated, how long it lasted, 
+how many packets/bytes were exchanged, and whether it was an attack.
+
+                    ~PART 3
+- Used .groupby() to analyze relationships
+
+                    ~PART 4
+- Used matplotlib and seaborn to draw:
+
+                    ~task 5A
+-Used networkx.DiGraph().
+- For each row, created a directed edge from Saddr to Daddr.
+- Stored Pkts and Proto as edge attributes.
+**This graph simulates how devices communicate — IPs are network 
+devices, and flows between them become directed edges.**
+
+                    ~task 5B
+- Each node is an event (row index).
+- Added edges between events that share the same Saddr.
+**This helps track recurring behavior — for example, one device creating multiple 
+similar flows might indicate automation or scanning.**
+
+                    ~ task 5C
+- Chose Proto and State as nodes.
+- Connected them if they appear together in the same row.
+**This graph shows which protocols occur in which states — useful for observing behavior during an attack.**
+
+                    ~task 6
+- Function build_attribute_graph() lets user specify:
+
+node_attr: what to use as node
+
+edge_attr: what to use as connection
+
+Handles both one-attribute and two-attribute cases.
+
+**This function gives full flexibility — e.g., build graphs by 
+Saddr and Proto, or by Category and State, depending on what we want to analyze.**
+                   
+                    ~TASK 7
+Sampled 1000 rows for performance.
+
+Used spring_layout() and colored nodes by degree.
+
+**Visualization of the network reveals key hubs or isolated devices.**
+
+                    ~TASK 8
+Implemented a recursive Depth-First Search (DFS).
+
+Returned one valid path from Saddr to Daddr.
+**DFS simulates how a packet might travel through the network — not necessarily the 
+shortest, but a reachable path.**
+
+                    ~PART 9
+Used edge attribute weight (based on Pkts)
+
+Compared total packet flow in DFS path vs networkx.shortest_path
+**This helps estimate the load or importance of a path — e.g., if a path carries 10,000 packets, it's likely critical.**
+
+                    ~TASK 10-11
+**Coloring makes graphs easier to interpret. You can instantly see traffic types or group similar behaviors visually.**
+
+                    ~TASK 12
+**These metrics show how influential a node is (centrality), how connected the network is (density), 
+and how efficient it is (path length).**
+
+                    ~Conclusion
+- Cleaned and visualized IoT traffic
+- Represented network as flexible graph models
+- Applied DFS to find communication paths
+- Counted packet flow between nodes
+- Used coloring and metrics for deeper insights
